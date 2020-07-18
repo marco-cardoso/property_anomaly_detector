@@ -4,14 +4,6 @@ from pymongo import MongoClient
 
 
 class Database:
-    DEFAULT_PROPS_PROJ = {
-        'title': 1,
-        'price': 1,
-        'stations': 1,
-        'district': 1,
-        'latitude': 1,
-        'longitude': 1
-    }
 
     def __init__(self, database_name: str) -> None:
         """
@@ -27,7 +19,7 @@ class Database:
         self.districts = database['districts']
         self.errors = database["errors"]
 
-    def get_properties(self, default_projection=DEFAULT_PROPS_PROJ):
+    def get_properties(self, default_projection={}):
         return list(self.properties.find({}, default_projection))
 
     def insert_properties(self, properties: list):

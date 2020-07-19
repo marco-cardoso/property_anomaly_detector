@@ -28,3 +28,11 @@ class Database:
         :param properties: List of dictionaries representing the properties
         """
         self.properties.insert_many(properties)
+
+    def get_unique_elements(self, field: str) -> list:
+        """
+        It gets the unique values from a specific field
+        :param field: String with the field
+        :return: A list with the strings of the unique values
+        """
+        return self.properties.distinct(field)

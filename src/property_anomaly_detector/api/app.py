@@ -55,11 +55,12 @@ def get_properties():
 
 @app.route("/anomalies", methods=['GET'])
 def get_anomalies():
+    ppts_limits = 200
     if request.method == 'GET':
         filters = generate_filter_dict(request.args)
         anomalies = detect_anomalies.detect_db(filters).drop('_id', axis=1)
         anomalies.sort_values(by='outlier_score', inplace=True)
-        return Response(anomalies.to_json(orient="records"), mimetype='application/json')
+        return Response(anomalies[:ppts_limits].to_json(orient="records"), mimetype='application/json')
 
 
 if __name__ == "__main__":

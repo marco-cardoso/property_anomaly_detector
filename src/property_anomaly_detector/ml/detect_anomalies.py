@@ -5,7 +5,7 @@ from property_anomaly_detector.features.read_df import read_df
 from sklearn.neighbors import NearestNeighbors
 
 
-def detect_db(filters={}, n_neighbors: int = 10):
+def detect_db(filters={}, n_neighbors: int = 50):
     filters['status'] = 'to_rent'
     filters['rental_prices.per_month'] = {'$lt': 2200}
 

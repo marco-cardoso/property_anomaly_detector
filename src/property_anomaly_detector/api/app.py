@@ -1,10 +1,16 @@
 import ast
 
 from flask import Flask, request, jsonify, Response
+from flask_cors import CORS, cross_origin
+
 from property_anomaly_detector.database import Database
 from property_anomaly_detector.ml import detect_anomalies
 
 app = Flask(__name__)
+
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
 db = Database("zoopla")
 
 default_projection = {
@@ -46,6 +52,7 @@ def generate_filter_dict(args):
 
 
 @app.route("/properties", methods=['GET'])
+@cross_origin()
 def get_properties():
     if request.method == 'GET':
         filters = generate_filter_dict(request.args)
@@ -54,13 +61,23 @@ def get_properties():
 
 
 @app.route("/anomalies", methods=['GET'])
+@cross_origin()
 def get_anomalies():
     ppts_limits = 200
     if request.method == 'GET':
         filters = generate_filter_dict(request.args)
-        anomalies = detect_anomalies.detect_db(filters).drop('_id', axis=1)
+        anomalies, df_median = detect_anomalies.detect_db(filters)
+
+        anomalies.drop('_id', axis=1, inplace=True)
         anomalies.sort_values(by='outlier_score', inplace=True)
-        return Response(anomalies[:ppts_limits].to_json(orient="records"), mimetype='application/json')
+        
+        response = {
+            'anomalies' : anomalies[:ppts_limits].to_dict(orient="records"),
+            'data_median' : df_median
+        }
+
+
+        return response
 
 
 if __name__ == "__main__":

@@ -30,6 +30,8 @@ def detect_db(filters={}, n_neighbors: int = 50):
     df = flatten_rental_prices(df)
     df = convert_numerical_cols(df)
 
+    dataset_median = df['monthly_rental_price'].median()
+
     df['shared_occupancy'] = df['shared_occupancy'].map({'Y': 1, 'N': 0})
 
     cum_sum = df['outcode'].value_counts(normalize=True).cumsum()
@@ -56,7 +58,7 @@ def detect_db(filters={}, n_neighbors: int = 50):
         axis=1
     ).reshape(-1, 1)
 
-    return df
+    return df, dataset_median
 
 
 if __name__ == "__main__":

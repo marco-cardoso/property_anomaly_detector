@@ -35,10 +35,10 @@ def detect_db(filters={}, n_neighbors: int = 50):
 
     normalize_mask = ['latitude', 'longitude', 'num_bedrooms']
 
-    df[normalize_mask] = normalize_features(df[normalize_mask].values)
+    df_ml = normalize_features(df[normalize_mask].values)
 
-    nbrs = NearestNeighbors(n_neighbors=n_neighbors, algorithm='ball_tree').fit(df[normalize_mask])
-    distances, indices = nbrs.kneighbors(df[normalize_mask])
+    nbrs = NearestNeighbors(n_neighbors=n_neighbors, algorithm='ball_tree').fit(df_ml)
+    distances, indices = nbrs.kneighbors(df_ml)
 
     df['outlier_score'] = df['monthly_rental_price'].values.reshape(-1, 1) - np.median(
         df['monthly_rental_price'].iloc[indices.reshape(1, -1)[0]].values.reshape(len(df), n_neighbors),

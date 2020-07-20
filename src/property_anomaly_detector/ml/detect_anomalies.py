@@ -11,10 +11,21 @@ def detect_db(filters={}, n_neighbors: int = 50):
 
     df = read_df(
         filters,
-        projection={'latitude': True, 'longitude': True, 'outcode': True, 'furnished_state': True,
-                    'rental_prices.shared_occupancy': True, 'details_url': True,
-                    'property_type': True, 'status': True, 'num_bedrooms': True, 'num_bathrooms': True,
-                    'rental_prices.per_month': True}
+        projection={
+            'latitude': True, 
+            'longitude': True, 
+            'outcode': True, 
+            'furnished_state': True,
+            'rental_prices.shared_occupancy': True, 
+            'details_url': True,
+            'property_type': True, 
+            'status': True, 
+            'num_bedrooms': True, 
+            'num_bathrooms': True,
+            'num_floors' : True,
+            'num_recepts' : True,
+            'rental_prices.per_month': True
+        }
     )
     df = flatten_rental_prices(df)
     df = convert_numerical_cols(df)

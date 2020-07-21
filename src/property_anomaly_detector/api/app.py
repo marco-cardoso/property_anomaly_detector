@@ -63,17 +63,17 @@ def get_properties():
 @app.route("/anomalies", methods=['GET'])
 @cross_origin()
 def get_anomalies():
-    ppts_limits = 200
+    ppts_limits = 50
     if request.method == 'GET':
         filters = generate_filter_dict(request.args)
         anomalies, df_median = detect_anomalies.detect_db(filters)
 
         anomalies.drop('_id', axis=1, inplace=True)
-        anomalies.sort_values(by='outlier_score', inplace=True)
+        anomalies.sort_values(by='outlier_score', ascending=False, inplace=True)
         
         response = {
             'anomalies' : anomalies[:ppts_limits].to_dict(orient="records"),
-            'data_median' : df_median
+            'data_median' : df_median,
         }
 
 

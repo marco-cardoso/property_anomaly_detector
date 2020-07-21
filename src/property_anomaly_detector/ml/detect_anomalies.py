@@ -29,9 +29,10 @@ def detect_db(filters={}, n_neighbors: int = 50):
     )
     df = flatten_rental_prices(df)
     df = convert_numerical_cols(df)
+    df.drop_duplicates(inplace=True)
 
     dataset_median = df['monthly_rental_price'].median()
-
+  
     df['shared_occupancy'] = df['shared_occupancy'].map({'Y': 1, 'N': 0})
 
     cum_sum = df['outcode'].value_counts(normalize=True).cumsum()
@@ -53,10 +54,13 @@ def detect_db(filters={}, n_neighbors: int = 50):
     nbrs = NearestNeighbors(n_neighbors=n_neighbors, algorithm='ball_tree').fit(df_ml)
     distances, indices = nbrs.kneighbors(df_ml)
 
-    df['outlier_score'] = df['monthly_rental_price'].values.reshape(-1, 1) - np.median(
+    neighbors_median = np.median(
         df['monthly_rental_price'].iloc[indices.reshape(1, -1)[0]].values.reshape(len(df), n_neighbors),
         axis=1
     ).reshape(-1, 1)
+
+    df['neighbors_median'] = neighbors_median
+    df['outlier_score'] = (df['monthly_rental_price'].values.reshape(-1, 1) - neighbors_median) * -1
 
     return df, dataset_median
 

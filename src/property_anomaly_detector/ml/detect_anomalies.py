@@ -51,6 +51,10 @@ def detect_db(filters={}, n_neighbors: int = 50):
 
     df_ml = normalize_features(df[normalize_mask].values)
 
+    # If the dataset is smaller than the number of neighbors is necessary to reduce
+    # the n_neighbors value, otherwise an exception will be raised
+    n_neighbors = min([n_neighbors, len(df)])
+
     nbrs = NearestNeighbors(n_neighbors=n_neighbors, algorithm='ball_tree').fit(df_ml)
     distances, indices = nbrs.kneighbors(df_ml)
 

@@ -36,18 +36,29 @@ def generate_filter_dict(args):
     filters = {}
 
     if 'shared_occupancy' in args:
-        filters['rental_prices.shared_occupancy'] = {'$in': ast.literal_eval(args['shared_occupancy'])}
+        values = ast.literal_eval(args['shared_occupancy'])
+
+        if "" in values:
+            values.remove("")
+
+        filters['rental_prices.shared_occupancy'] = {'$in': values}
 
     categorical_variables = ['furnished_state', 'property_type']
     for variable in categorical_variables:
+        
+
         if variable in args:
-            filters[variable] = {'$in': ast.literal_eval(args[variable])}
+            values = ast.literal_eval(args[variable])
+            if "" in values:
+                values.remove("")
+            
+            filters[variable] = {'$in': values}
 
     numerical_variables = ['num_bedrooms', 'num_bathrooms', 'num_recepts', 'num_floors']
     for variable in numerical_variables:
         if variable + '_min' in args and variable + '_max' in args:
             filters[variable] = {'$gte': args[variable + '_min'], '$lte': args[variable + '_max']}
-
+    print(filters)
     return filters
 
 

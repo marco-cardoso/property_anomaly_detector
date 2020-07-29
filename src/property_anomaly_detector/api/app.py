@@ -58,7 +58,7 @@ def generate_filter_dict(args):
     for variable in numerical_variables:
         if variable + '_min' in args and variable + '_max' in args:
             filters[variable] = {'$gte': args[variable + '_min'], '$lte': args[variable + '_max']}
-    print(filters)
+
     return filters
 
 
@@ -69,6 +69,16 @@ def get_properties():
         filters = generate_filter_dict(request.args)
         properties = db.get_properties(default_filter=filters, default_projection=default_projection)
         return jsonify(properties)
+
+
+@app.route("/get-categorical-filters", methods=['GET'])
+@cross_origin()
+def get_categorical_filters():
+    if request.method == 'GET':
+        result = {}
+        result['distinct_property_types'] = list(db.get_unique_elements("property_type"))
+        result['distinct_furnished_states'] = list(db.get_unique_elements("furnished_state"))
+        return result
 
 
 @app.route("/anomalies", methods=['GET'])

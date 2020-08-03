@@ -76,8 +76,15 @@ def get_properties():
 def get_categorical_filters():
     if request.method == 'GET':
         result = {}
-        result['distinct_property_types'] = list(db.get_unique_elements("property_type"))
-        result['distinct_furnished_states'] = list(db.get_unique_elements("furnished_state"))
+        result['property_type'] = list(db.get_unique_elements("property_type"))
+        empty_string_idx = result['property_type'].index('')
+        result['property_type'][empty_string_idx] = "not_specified"
+
+        result['furnished_state'] = list(db.get_unique_elements("furnished_state"))
+        empty_string_idx = result['furnished_state'].index(None)
+        result['furnished_state'][empty_string_idx] = "not_specified"
+
+        result['shared_occupancy'] = list(db.get_unique_elements("rental_prices.shared_occupancy"))
         return result
 
 

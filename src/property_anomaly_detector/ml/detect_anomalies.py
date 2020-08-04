@@ -23,7 +23,11 @@ def detect(df: pd.DataFrame, x_variables: list, n_neighbors: int = 50):
     ).reshape(-1, 1)
 
     df['neighbors_median'] = neighbors_median
-    df['outlier_score'] = (df['monthly_rental_price'].values.reshape(-1, 1) - neighbors_median) * -1
+
+    # Calculate the deviation
+    df['outlier_score'] = (df['monthly_rental_price'].values.reshape(-1, 1) - neighbors_median)
+    # Since we care more about the lowest values it's necessary to invert the signals
+    df['outlier_score'] *= -1
 
     return df
 
@@ -71,7 +75,7 @@ def detect_db(filters=None, n_neighbors: int = 50, anomaly_data: dict = None):
 
 def classify_property(property: dict, filters: dict):
     df = detect_db(filters, anomaly_data=property)
-    property_anomaly_score = df.iloc[-1]['outlier_score']
+    property_anomaly_score = df.iloc[0]['outlier_score']
     highest_anomaly_score = df.sort_values(by="outlier_score", ascending=False).iloc[0]['outlier_score']
     return property_anomaly_score, highest_anomaly_score
 

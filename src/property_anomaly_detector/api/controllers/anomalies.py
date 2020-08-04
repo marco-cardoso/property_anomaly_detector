@@ -39,6 +39,7 @@ def classify_anomaly():
             'rental_prices.shared_occupancy': property['shared_occupancy']
         }
 
+
         property_anomaly_score, highest_neighbor_score = detect_anomalies.classify_property(
             property,
             filters

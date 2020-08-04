@@ -32,7 +32,7 @@ def detect(df: pd.DataFrame, x_variables: list, n_neighbors: int = 50):
     return df
 
 
-def detect_db(filters=None, n_neighbors: int = 50, anomaly_data: dict = None):
+def detect_db(filters=None, n_neighbors: int = 50, property: dict = None):
     if filters is None:
         filters = {}
 
@@ -55,12 +55,16 @@ def detect_db(filters=None, n_neighbors: int = 50, anomaly_data: dict = None):
             'num_recepts': True,
             'rental_prices.per_month': True
         },
-        flatten_attributes=True
+        flatten_attributes=True,
+        drop_outliers=True
     )
 
-    if anomaly_data is not None:
+    # Insert the given property as the first value of the dataframe
+    # since this is not sorted is possible to retrieve later
+    # using pandas iloc function
+    if property is not None:
         df = pd.concat([
-            pd.DataFrame([anomaly_data]),
+            pd.DataFrame([property]),
             df
         ])
 
@@ -74,7 +78,7 @@ def detect_db(filters=None, n_neighbors: int = 50, anomaly_data: dict = None):
 
 
 def classify_property(property: dict, filters: dict):
-    df = detect_db(filters, anomaly_data=property)
+    df = detect_db(filters, property=property)
     property_anomaly_score = df.iloc[0]['outlier_score']
     highest_anomaly_score = df.sort_values(by="outlier_score", ascending=False).iloc[0]['outlier_score']
     return property_anomaly_score, highest_anomaly_score

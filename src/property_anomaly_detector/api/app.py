@@ -9,7 +9,7 @@ app = Flask(__name__)
 if environ.get("CORS"):
     CORS(app)
 
-app.add_url_rule('/classify-anomaly', 'classify-anomaly', anomalies.classify_anomaly, methods=['GET'])
+app.add_url_rule('/classify-property', 'classify-property', anomalies.classify_anomaly, methods=['GET'])
 app.add_url_rule('/anomalies', 'anomalies', anomalies.get_anomalies, methods=['GET'])
 
 app.add_url_rule("/properties", "properties", properties.get_properties, methods=['GET'])

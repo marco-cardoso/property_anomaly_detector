@@ -1,11 +1,12 @@
 import numpy as np
+import pandas as pd
 from property_anomaly_detector.features.feature_engineer import normalize_features, flatten_rental_prices, \
     convert_numerical_cols
 from property_anomaly_detector.features.read_df import read_df
 from sklearn.neighbors import NearestNeighbors
 
 
-def detect_db(filters={}, n_neighbors: int = 50):
+def detect_db(filters={}, n_neighbors: int = 50, anomaly_data:dict=None):
     filters['status'] = 'to_rent'
     filters['rental_prices.per_month'] = {'$lt': 2200}
 
@@ -27,9 +28,19 @@ def detect_db(filters={}, n_neighbors: int = 50):
             'rental_prices.per_month': True
         }
     )
+
+    print(len(df))
+
+  
     df = flatten_rental_prices(df)
-    df = convert_numerical_cols(df)
+
+      
+
+
+
     df.drop_duplicates(inplace=True)
+
+    df = convert_numerical_cols(df)
 
     dataset_median = df['monthly_rental_price'].median()
   
@@ -39,6 +50,11 @@ def detect_db(filters={}, n_neighbors: int = 50):
     mask = cum_sum < 0.99
 
     df = df[df['outcode'].isin(cum_sum[mask].index.values)]
+
+    row_df = pd.DataFrame([anomaly_data])
+    df = pd.concat([row_df, df], ignore_index=True)
+
+    df = convert_numerical_cols(df)
 
     # df = df.append({
     #     'latitude': 51.540285,

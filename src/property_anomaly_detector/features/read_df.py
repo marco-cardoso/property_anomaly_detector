@@ -30,8 +30,8 @@ def read_df(
     ) -> pd.DataFrame:
     """
     It reads the data from the database and convert into a pandas dataframe
-    :param drop_outliers: If true then drops outliers based on z-score using price and
-    outcode. This only works with extremely high values
+    :param drop_outliers: If true then drops outliers based on z-score using price.
+    This only works with extremely high values
     :param flatten_attributes: It flattens the rental_prices attributes
     :param filters: A dictionary with the filters to use with MongoDB
     :param projection: Dictionary with the projection to use
@@ -59,10 +59,5 @@ def read_df(
     df = convert_numerical_cols(df)
 
     df['shared_occupancy'] = df['shared_occupancy'].map({'Y': 1, 'N': 0})
-
-    if drop_outliers:
-        cum_sum = df['outcode'].value_counts(normalize=True).cumsum()
-        mask = cum_sum < 0.99
-        df = df[df['outcode'].isin(cum_sum[mask].index.values)]
 
     return df

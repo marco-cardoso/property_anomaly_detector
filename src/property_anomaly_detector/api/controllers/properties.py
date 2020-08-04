@@ -19,7 +19,6 @@ default_projection = {
     'rental_prices.per_month': 1,
     'outcode': 1,
     'details_url': 1
-
 }
 
 
@@ -62,8 +61,7 @@ def get_properties():
 def get_categorical_filters():
     if request.method == 'GET':
 
-        result = {}
-        result['property_type'] = list(db.get_unique_elements("property_type"))
+        result = {'property_type': list(db.get_unique_elements("property_type"))}
         empty_string_idx = result['property_type'].index('')
         result['property_type'][empty_string_idx] = "not_specified"
 

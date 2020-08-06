@@ -15,12 +15,14 @@ class Database:
         database = self.client[database_name]
 
         self.properties = database['properties']
-        self.links = database['links']
-        self.districts = database['districts']
-        self.errors = database["errors"]
+        self.specs = database['specs']
 
     def get_properties(self, default_filter={}, projection={}):
         return list(self.properties.find(default_filter, projection))
+
+    def insert_last_update_date(self, date):
+        self.specs.remove({})
+        self.specs.insert({'last_update_date': date})
 
     def insert_properties(self, properties: list):
         """

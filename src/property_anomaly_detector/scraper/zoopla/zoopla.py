@@ -75,6 +75,8 @@ def main():
             sleep(1)
             i += 1
 
+    db.insert_last_update_date(datetime.strftime(datetime.now(), "%Y-%m-%d"))
+
 
 if __name__ == "__main__":
     main()

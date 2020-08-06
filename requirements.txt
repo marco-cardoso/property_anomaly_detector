@@ -28,3 +28,5 @@ pyod>=0.8.0
 matplotlib>=3.2.2
 flask==1.1.2
 memory_profiler==0.57.0
+airflow==1.10.10
+pymongo==3.9.0

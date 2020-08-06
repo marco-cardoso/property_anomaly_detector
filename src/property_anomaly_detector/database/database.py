@@ -38,6 +38,9 @@ class Database:
     def insert_districts(self, districts: list):
         self.districts.insert_many([{'district_name': district} for district in districts])
 
+    def get_districts(self):
+        return self.districts.find({})
+
     def get_unique_elements(self, field: str) -> list:
         """
         It gets the unique values from a specific field

@@ -6,16 +6,13 @@ import os
 from time import sleep
 from datetime import datetime
 
-import pandas as pd
 import requests as re
 from property_anomaly_detector.database import Database
 
 db = Database("zoopla")
 API_KEY = os.environ['ZOOPLA_API']
 
-LONDON_DISTRICTS = pd.read_csv(
-    "../../datasets/london_district_names.csv", usecols=['district_name']
-)
+LONDON_DISTRICTS = db.get_districts()
 
 logging.basicConfig(
     level=logging.INFO,
@@ -28,7 +25,8 @@ logging.basicConfig(
 
 
 def main():
-    for idx, district in enumerate(LONDON_DISTRICTS.values):
+    for idx, district in enumerate(LONDON_DISTRICTS):
+        district = district['district_name']
         logging.info(f"Collecting {district[0]} properties !")
 
         i = 0

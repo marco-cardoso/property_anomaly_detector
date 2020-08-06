@@ -15,14 +15,14 @@ class Database:
         database = self.client[database_name]
 
         self.properties = database['properties']
+        self.districts = database['districts']
         self.specs = database['specs']
 
     def get_properties(self, default_filter={}, projection={}):
         return list(self.properties.find(default_filter, projection))
 
-    def insert_last_update_date(self, date):
-        self.specs.remove({})
-        self.specs.insert({'last_update_date': date})
+    def remove_properties(self, condition: dict):
+        self.properties.remove(condition)
 
     def insert_properties(self, properties: list):
         """
@@ -30,6 +30,13 @@ class Database:
         :param properties: List of dictionaries representing the properties
         """
         self.properties.insert_many(properties)
+
+    def insert_last_update_date(self, date):
+        self.specs.remove({})
+        self.specs.insert({'last_update_date': date})
+
+    def insert_districts(self, districts: list):
+        self.districts.insert_many([{'district_name': district} for district in districts])
 
     def get_unique_elements(self, field: str) -> list:
         """

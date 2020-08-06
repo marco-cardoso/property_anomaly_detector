@@ -53,7 +53,7 @@ def main():
                     break
 
                 for property in properties:
-                    property.update({'announced_at': datetime.strftime(datetime.now(), "%Y-%m-%d")})
+                    property.update({'announced_at': datetime.strftime(datetime.utcnow(), "%Y-%m-%d")})
 
                 db.insert_properties(properties)
 
@@ -75,7 +75,12 @@ def main():
             sleep(1)
             i += 1
 
-    db.insert_last_update_date(datetime.strftime(datetime.now(), "%Y-%m-%d"))
+    date = datetime.strftime(datetime.utcnow(), "%Y-%m-%d")
+    logging.info("Saving last update date")
+    db.insert_last_update_date(date)
+
+    logging.info("Removing old properties")
+    db.remove_properties({'announced_at': {'$ne': '2020-03-02'}})
 
 
 if __name__ == "__main__":

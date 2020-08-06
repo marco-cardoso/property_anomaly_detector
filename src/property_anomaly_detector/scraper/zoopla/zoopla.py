@@ -4,6 +4,7 @@
 import logging
 import os
 from time import sleep
+from datetime import datetime
 
 import pandas as pd
 import requests as re
@@ -13,7 +14,7 @@ db = Database("zoopla")
 API_KEY = os.environ['ZOOPLA_API']
 
 LONDON_DISTRICTS = pd.read_csv(
-    "../datasets/london_district_names.csv", usecols=['district_name']
+    "../../datasets/london_district_names.csv", usecols=['district_name']
 )
 
 logging.basicConfig(
@@ -27,7 +28,6 @@ logging.basicConfig(
 
 
 def main():
-
     for idx, district in enumerate(LONDON_DISTRICTS.values):
         logging.info(f"Collecting {district[0]} properties !")
 
@@ -52,7 +52,11 @@ def main():
                         f"No more properties available for this district !!")
                     break
 
+                for property in properties:
+                    property.update({'announced_at': datetime.strftime(datetime.now(), "%Y-%m-%d")})
+
                 db.insert_properties(properties)
+
                 logging.info(
                     f"{idx + 1}/{len(LONDON_DISTRICTS.values)} District : {district[0]}  | Page {i} | {len(properties)} "
                     f"properties successfully saved !")

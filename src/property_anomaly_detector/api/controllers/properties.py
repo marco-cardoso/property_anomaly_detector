@@ -54,13 +54,17 @@ def generate_filter_dict(args):
 def get_properties():
     if request.method == 'GET':
         filters = generate_filter_dict(request.args)
-        properties = db.get_properties(default_filter=filters, default_projection=default_projection)
+        properties = db.get_properties(default_filter=filters, projection={
+            '_id' : False,
+            'latitude': 1,
+            'longitude': 1,
+            'rental_prices.per_month': 1
+        })
         return jsonify(properties)
 
 
 def get_categorical_filters():
     if request.method == 'GET':
-
         result = {'property_type': list(db.get_unique_elements("property_type"))}
         empty_string_idx = result['property_type'].index('')
         result['property_type'][empty_string_idx] = "not_specified"

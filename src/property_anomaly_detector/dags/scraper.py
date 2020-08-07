@@ -7,7 +7,7 @@ from property_anomaly_detector.scraper.zoopla import zoopla
 
 default_args = {
     "depends_on_past": False,
-    "start_date": datetime.datetime.utcnow(),
+    "start_date": datetime.datetime(2020, 3, 5),
     "retries": 3,
     "retry_delay": datetime.timedelta(minutes=1)
 }
@@ -21,3 +21,5 @@ dag = DAG(
 )
 
 t1 = PythonOperator(task_id="update_data", python_callable=zoopla.main, dag=dag)
+
+t1

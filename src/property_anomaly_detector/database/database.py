@@ -18,7 +18,15 @@ class Database:
         self.districts = database['districts']
         self.specs = database['specs']
 
-    def get_properties(self, default_filter={}, projection={}):
+    def get_properties(self, default_filter=None, projection=None):
+        if projection is None:
+            projection = {}
+        if default_filter is None:
+            default_filter = {}
+
+        last_update_date = self.get_specs()['last_update_date']
+        default_filter.update({'announced_at': last_update_date})
+
         return list(self.properties.find(default_filter, projection))
 
     def remove_properties(self, condition: dict):

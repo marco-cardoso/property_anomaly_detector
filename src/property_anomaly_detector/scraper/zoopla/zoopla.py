@@ -12,7 +12,7 @@ from property_anomaly_detector.database import Database
 db = Database("zoopla")
 API_KEY = os.environ['ZOOPLA_API']
 
-LONDON_DISTRICTS = db.get_districts()
+LONDON_DISTRICTS = list(db.get_districts())
 
 logging.basicConfig(
     level=logging.INFO,
@@ -27,17 +27,18 @@ logging.basicConfig(
 def main():
     for idx, district in enumerate(LONDON_DISTRICTS):
         district = district['district_name']
-        logging.info(f"Collecting {district[0]} properties !")
+        logging.info(f"Collecting {district} properties !")
 
         i = 0
         while i < 100:
 
             url = f"http://api.zoopla.co.uk/api/v1/property_listings.json?" \
-                  f"area={district[0]},London&listing_status=rent&page_size=100&page_number={i}&api_key={API_KEY}"
+                  f"area={district},London&listing_status=rent&page_size=100&page_number={i}&api_key={API_KEY}"
 
             response = re.get(url)
+            logging.info(url)
             logging.info(
-                f"{idx + 1}/{len(LONDON_DISTRICTS.values)} District : {district[0]}  | Page {i} | "
+                f"{idx + 1}/{len(LONDON_DISTRICTS)} District : {district}  | Page {i} | "
                 f"Request code : {response.status_code}!!")
 
             if response.status_code == 200:
@@ -46,7 +47,7 @@ def main():
 
                 if len(properties) == 0:
                     logging.info(
-                        f"{idx + 1}/{len(LONDON_DISTRICTS.values)} District : {district[0]}  | Page {i} | "
+                        f"{idx + 1}/{len(LONDON_DISTRICTS)} District : {district}  | Page {i} | "
                         f"No more properties available for this district !!")
                     break
 
@@ -56,29 +57,28 @@ def main():
                 db.insert_properties(properties)
 
                 logging.info(
-                    f"{idx + 1}/{len(LONDON_DISTRICTS.values)} District : {district[0]}  | Page {i} | {len(properties)} "
+                    f"{idx + 1}/{len(LONDON_DISTRICTS)} District : {district}  | Page {i} | {len(properties)} "
                     f"properties successfully saved !")
             elif response.status_code == 403:
                 logging.info(
-                    f"{idx + 1}/{len(LONDON_DISTRICTS.values)} District : {district[0]}  | Page {i} | "
+                    f"{idx + 1}/{len(LONDON_DISTRICTS)} District : {district}  | Page {i} | "
                     f" 100 calls reached. Wait for the 1 hour delay ! Trying again in 1 hour...")
                 sleep(3600)
                 continue
             else:
                 logging.info(
-                    f"{idx + 1}/{len(LONDON_DISTRICTS.values)} District : {district[0]}  | Page {i} | "
+                    f"{idx + 1}/{len(LONDON_DISTRICTS)} District : {district}  | Page {i} | "
                     f"Something went wrong !!")
                 break
 
             sleep(1)
             i += 1
-
     date = datetime.strftime(datetime.utcnow(), "%Y-%m-%d")
     logging.info("Saving last update date")
     db.insert_last_update_date(date)
 
     logging.info("Removing old properties")
-    db.remove_properties({'announced_at': {'$ne': '2020-03-02'}})
+    db.remove_properties({'announced_at': {'$ne': date}})
 
 
 if __name__ == "__main__":

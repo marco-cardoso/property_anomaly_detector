@@ -35,6 +35,9 @@ class Database:
         self.specs.remove({})
         self.specs.insert({'last_update_date': date})
 
+    def get_specs(self):
+        return self.specs.find({})[0]
+
     def insert_districts(self, districts: list):
         self.districts.insert_many([{'district_name': district} for district in districts])
 

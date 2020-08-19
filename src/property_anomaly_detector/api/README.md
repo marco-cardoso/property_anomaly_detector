@@ -2,7 +2,7 @@
 
 This API is responsible to perform ML operations over the daily rental properties.
 
-If you want to run locally and allow cross origin requests you must create a environment variable called with any value
+If you want to run locally and allow cross origin requests you must create a environment variable with any value called
 
     CORS
     

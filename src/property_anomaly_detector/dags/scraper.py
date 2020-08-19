@@ -1,3 +1,7 @@
+"""
+    DAG responsible to get properties from ZOOPLA API daily
+"""
+
 import datetime
 
 from airflow import DAG

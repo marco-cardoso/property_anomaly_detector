@@ -1,6 +1,20 @@
 """
-    This module reads the london_district_names.csv file and
-    stores it into a MongoDB collection
+    In order to execute it you need to have installed in your machine
+    at least Python 3.7 and MongoDB. Make sure to have installed all the
+    dependencies available in one of the package files in the root of this
+    project. E.g requirements.txt
+
+    You also need to have the follow environment variables properly configured :
+
+    - MONGO_HOST
+        Your MongoDB host.
+
+    - MONGO_PORT
+        Your MongoDB port
+
+    With all necessary steps done simply execute :
+
+        python save_ld_district_names.py
 """
 import os
 import logging

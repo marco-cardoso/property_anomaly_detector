@@ -35,13 +35,13 @@
 """
 import logging
 import os
+import sys
 from time import sleep
 from datetime import datetime
 
 import requests as re
 
 from property_anomaly_detector.database import Database
-from property_anomaly_detector.datasets import save_ld_district_names
 
 db = Database("zoopla")
 API_KEY = os.environ['ZOOPLA_API']
@@ -74,6 +74,11 @@ def main():
     global _current_page_idx, _london_districts
 
     _london_districts = list(db.get_districts())
+
+    if len(_london_districts) == 0:
+        logging.error("London districts are not available in MongoDB. Please insert them using the script available at "
+                      "src/property_anomaly_detector/datasets/save_ld_district_names.py")
+        sys.exit()
 
     for idx, district in enumerate(_london_districts):
         district = district['district_name']

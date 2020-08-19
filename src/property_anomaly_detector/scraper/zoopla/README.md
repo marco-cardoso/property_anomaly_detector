@@ -1,8 +1,10 @@
 **<h1>Zoopla API scraper</h1>**
 
 The zoopla.py script uses the ZOOPLA API to get properties from the London districts that are currently being displayed in their website.
-In order to execute it you need to have installed in your machine at least Python 3.7 and MongoDB. You also need to
-have the follow environment variables properly configured :
+Make sure to have installed all the dependencies available in one of the package files in the root of this
+project. E.g requirements.txt
+
+You also need to have the follow environment variables properly configured :
 
 <ul>
     <li>

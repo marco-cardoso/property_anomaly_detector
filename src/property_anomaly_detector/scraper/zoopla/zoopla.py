@@ -3,8 +3,11 @@
     The zoopla.py script uses the ZOOPLA API to get rental properties from the
     London districts that are currently being displayed in their website.
     In order to execute it you need to have installed in your machine
-    at least Python 3.7 and MongoDB. You also need to have the follow
-    environment variables properly configured :
+    at least Python 3.7 and MongoDB. Make sure to have installed all the
+    dependencies available in one of the package files in the root of this
+    project. E.g requirements.txt
+
+    You also need to have the follow environment variables properly configured :
 
     - ZOOPLA_API
         Your Zoopla API key. In order to get it you need to register into ZOOPLA website :

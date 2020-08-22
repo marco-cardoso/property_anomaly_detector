@@ -44,9 +44,8 @@ from datetime import datetime
 
 import requests as re
 
-from property_anomaly_detector.database import Database
+from property_anomaly_detector.database import database as db
 
-db = Database("zoopla")
 API_KEY = os.environ['ZOOPLA_API']
 
 logging.basicConfig(

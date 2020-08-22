@@ -1,9 +1,8 @@
 import pandas as pd
-from property_anomaly_detector.database import Database
+from property_anomaly_detector.database import database
 from property_anomaly_detector.features.feature_engineer import flatten_rental_prices, \
     convert_numerical_cols
 
-database = Database("zoopla")
 default_projection = {
     '_id': False,
     'rental_prices.shared_occupancy': 1,

@@ -4,9 +4,7 @@ from sklearn.neighbors import NearestNeighbors
 
 from property_anomaly_detector.features.feature_engineer import normalize_features
 from property_anomaly_detector.features.read_df import read_df
-from property_anomaly_detector.database import Database
-
-database = Database("zoopla")
+from property_anomaly_detector.database import database
 
 
 def detect(df) -> pd.DataFrame:

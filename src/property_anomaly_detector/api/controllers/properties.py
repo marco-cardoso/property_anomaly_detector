@@ -1,9 +1,8 @@
 import ast
 
 from flask import request, jsonify
-from property_anomaly_detector.database import Database
+from property_anomaly_detector.database import database as db
 
-db = Database("zoopla")
 default_projection = {
     '_id': False,
     'rental_prices.shared_occupancy': 1,

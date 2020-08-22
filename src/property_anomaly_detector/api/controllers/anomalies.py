@@ -1,23 +1,12 @@
-from flask import request
+from flask import request, jsonify
 from property_anomaly_detector.anomaly import detect_anomalies
-from property_anomaly_detector.api.controllers.properties import generate_filter_dict
+from property_anomaly_detector.database import database
 
 
 def get_anomalies():
-    ppts_limits = 50
     if request.method == 'GET':
-        filters = generate_filter_dict(request.args)
-        anomalies = detect_anomalies.detect_db(filters)
-        dataset_median = anomalies['monthly_rental_price'].median()
-
-        anomalies.drop('_id', axis=1, inplace=True)
-        anomalies.sort_values(by='outlier_score', ascending=False, inplace=True)
-
-        response = {
-            'anomalies': anomalies[:ppts_limits].to_dict(orient="records"),
-            'data_median': dataset_median,
-        }
-        return response
+        anomalies = database.get_top_outliers()
+        return jsonify(anomalies)
 
 
 def classify_anomaly():
@@ -34,21 +23,13 @@ def classify_anomaly():
             'monthly_rental_price': float(request.args['monthly_rental_price'])
         }
 
-        filters = {
-            'property_type': property['property_type'],
-            'rental_prices.shared_occupancy': property['shared_occupancy']
-        }
-
-
         property_anomaly_score, highest_neighbor_score = detect_anomalies.classify_property(
-            property,
-            filters
+            property
         )
 
         result = {
             'property_anomaly_score': property_anomaly_score,
-            'highest_neighbor_score' : highest_neighbor_score
+            'highest_neighbor_score': highest_neighbor_score
         }
 
         return result
-

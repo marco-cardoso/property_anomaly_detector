@@ -1,6 +1,7 @@
 import datetime
 import os
 
+import pandas as pd
 from pymongo import MongoClient, CursorType
 
 
@@ -19,6 +20,9 @@ class Database:
         -   Specs
             Responsible to store parameters used by any module in this project
 
+        -   Anomalies
+            Responsible to store the top 100 anomaly properties
+
     """
 
     def __init__(self, database_name: str) -> None:
@@ -33,6 +37,7 @@ class Database:
         self.properties = database['properties']
         self.districts = database['districts']
         self.specs = database['specs']
+        self.anomalies = database['anomalies']
 
     def get_properties(self, default_filter=None, projection=None) -> list:
         """
@@ -124,3 +129,13 @@ class Database:
         :return: A list with the strings of the unique values
         """
         return self.properties.distinct(field)
+
+    def save_top_outliers(self, df: pd.DataFrame):
+        """
+        Save the given dataframe with the anomaly properties
+         in a Mongo collection called anomalies
+
+        :param df: A pandas dataframe with the results
+        """
+        self.anomalies.remove({})
+        self.anomalies.insert_many(df.to_dict(orient="records"))

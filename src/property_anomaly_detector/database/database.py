@@ -2,7 +2,7 @@ import datetime
 import os
 
 import pandas as pd
-from pymongo import MongoClient, CursorType
+from pymongo import MongoClient, CursorType, DESCENDING
 
 
 class Database:
@@ -33,7 +33,6 @@ class Database:
 
         database = self.client[database_name]
 
-        # Properties is the collection responsible to store
         self.properties = database['properties']
         self.districts = database['districts']
         self.specs = database['specs']
@@ -139,3 +138,12 @@ class Database:
         """
         self.anomalies.remove({})
         self.anomalies.insert_many(df.to_dict(orient="records"))
+
+    def get_top_outliers(self) -> list:
+        """
+        :return: A list with the anomalies stored in the 'anomalies' collection sorted by outlier_score
+        """
+        return list(self.anomalies.find({}, {'_id': False}).sort([("outlier_score", DESCENDING)]))
+
+
+db = Database("zoopla")

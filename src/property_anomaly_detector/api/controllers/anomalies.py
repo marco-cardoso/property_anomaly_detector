@@ -1,5 +1,5 @@
 from flask import request
-from property_anomaly_detector.ml import detect_anomalies
+from property_anomaly_detector.anomaly import detect_anomalies
 from property_anomaly_detector.api.controllers.properties import generate_filter_dict
 
 

@@ -38,7 +38,7 @@ def get_properties_gdf(df: pd.DataFrame) -> gpd.GeoDataFrame:
     :return: A geopandas dataframe
     """
     properties_gpd = gpd.GeoDataFrame(
-        df[['latitude', 'longitude', 'monthly_rental_price']],
+        df,
         geometry=gpd.points_from_xy(df['longitude'], df['latitude'])
     )
     properties_gpd.crs = {'init': 'epsg:4326'}
@@ -55,6 +55,12 @@ def plot_london_layer():
     return ax
 
 
+def get_properties_districts(df):
+    properties_gdf = get_properties_gdf(df)
+    join = gpd.sjoin(london, properties_gdf, how="inner")
+    return join
+
+
 def plot_geospatial_layer(df: pd.DataFrame, func=np.median, orientation="vertical", title=None, **kwargs):
     """
 
@@ -67,9 +73,7 @@ def plot_geospatial_layer(df: pd.DataFrame, func=np.median, orientation="vertica
     :param kwargs: Arguments to customize the matplotlib plot
     :return: A dataframe with the aggregation result
     """
-    properties_gdf = get_properties_gdf(df)
-
-    join = gpd.sjoin(london, properties_gdf, how="inner")
+    join = get_properties_districts(df)
 
     district_median_price_agg = join.groupby(['name'], as_index=False).agg(
         {'monthly_rental_price': func, 'geometry': 'first'})

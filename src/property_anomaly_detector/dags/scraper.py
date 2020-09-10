@@ -24,6 +24,15 @@ dag = DAG(
     catchup=False
 )
 
-t1 = PythonOperator(task_id="update_data", python_callable=zoopla.main, dag=dag)
+t1 = PythonOperator(
+    task_id="update_data",
+    python_callable=zoopla.main,
+    dag=dag
+)
+
+t2 = PythonOperator(
+    task_id="detect_anomalies",
+
+)
 
 t1

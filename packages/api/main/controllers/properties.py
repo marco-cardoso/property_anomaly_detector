@@ -1,6 +1,8 @@
 import ast
 
-from flask import request, jsonify
+from flask import Blueprint
+from flask import request
+
 from property_anomaly_detector.database import database as db
 
 default_projection = {
@@ -19,6 +21,8 @@ default_projection = {
     'outcode': 1,
     'details_url': 1
 }
+
+app = Blueprint('properties', __name__)
 
 
 def generate_filter_dict(args):
@@ -50,18 +54,7 @@ def generate_filter_dict(args):
     return filters
 
 
-def get_properties():
-    if request.method == 'GET':
-        filters = generate_filter_dict(request.args)
-        properties = db.get_properties(default_filter=filters, projection={
-            '_id' : False,
-            'latitude': 1,
-            'longitude': 1,
-            'rental_prices.per_month': 1
-        })
-        return jsonify(properties)
-
-
+@app.route('/get-categorical-filters', methods=['GET'])
 def get_categorical_filters():
     if request.method == 'GET':
         result = {'property_type': list(db.get_unique_elements("property_type"))}

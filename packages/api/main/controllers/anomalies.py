@@ -1,14 +1,20 @@
 from flask import request, jsonify
+from flask import Blueprint
+
 from property_anomaly_detector.anomaly import detect_anomalies
 from property_anomaly_detector.database import database
 
+app = Blueprint('anomalies', __name__)
 
+
+@app.route('/anomalies', methods=['GET'])
 def get_anomalies():
     if request.method == 'GET':
         anomalies = database.get_top_outliers()
         return jsonify(anomalies)
 
 
+@app.route('/classify-property', methods=['GET'])
 def classify_anomaly():
     if request.method == 'GET':
         property = {

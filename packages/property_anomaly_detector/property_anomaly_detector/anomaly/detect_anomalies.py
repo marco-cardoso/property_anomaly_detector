@@ -44,7 +44,7 @@ def detect(df) -> pd.DataFrame:
 
     """
     groups = []
-    # The main problem of grouping by districts is that a few districts
+    # The config problem of grouping by districts is that a few districts
     # do not have enough amount of properties.
     for name, group in df.groupby(['property_type', 'shared_occupancy']):
         features = ['latitude', 'longitude', 'num_bedrooms', 'num_recepts']

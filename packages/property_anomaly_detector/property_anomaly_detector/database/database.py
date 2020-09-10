@@ -29,7 +29,20 @@ class Database:
         """
         :param database_name: A string with the database_name
         """
-        self.client = MongoClient(os.environ.get('MONGO_HOST'), int(os.environ.get('MONGO_PORT')))
+        mongo_host = os.environ.get("MONGO_HOST")
+        mongo_port = int(os.environ.get("MONGO_PORT"))
+        mongo_root_username = os.environ.get("MONGO_INITDB_ROOT_USERNAME")
+        mongo_root_passwd = os.environ.get("MONGO_INITDB_ROOT_PASSWORD")
+
+        if (mongo_root_username is not None) and (mongo_root_passwd is not None):
+            mongo_url = f"mongodb://{mongo_root_username}:{mongo_root_passwd}@{mongo_host}:{mongo_port}"
+        else:
+            mongo_url = f"mongodb://{mongo_host}:{mongo_port}"
+
+        self.client = MongoClient(
+            mongo_url,
+            maxPoolSize=20
+        )
 
         database = self.client[database_name]
 

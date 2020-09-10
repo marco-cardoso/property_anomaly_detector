@@ -22,7 +22,7 @@
     It's also necessary to have a MongoDB collection with the London districts. In order to
     create this collection execute once the script located at :
 
-        src/property_anomaly_detector/datasets/save_ld_district_names.py
+        packages/property_anomaly_detector/datasets/save_ld_district_names.py
 
     All the instructions necessary to run save_ld_district_names.py are available on itself.
 
@@ -79,7 +79,7 @@ def main():
 
     if len(_london_districts) == 0:
         logging.error("London districts are not available in MongoDB. Please insert them using the script available at "
-                      "src/property_anomaly_detector/datasets/save_ld_district_names.py")
+                      "packages/property_anomaly_detector/datasets/save_ld_district_names.py")
         sys.exit()
 
     for idx, district in enumerate(_london_districts):

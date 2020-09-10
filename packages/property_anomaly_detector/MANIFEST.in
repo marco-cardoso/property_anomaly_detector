@@ -1,0 +1,14 @@
+include *.txt
+include *.md
+include *.cfg
+include *.pkl
+recursive-include ./news_classifier/*
+
+include news_classifier/models/models/*.pkl
+include news_classifier/VERSION
+
+include ./requirements.txt
+exclude *.log
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

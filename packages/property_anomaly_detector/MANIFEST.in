@@ -2,6 +2,8 @@ include *.txt
 include *.md
 include *.cfg
 include *.pkl
+include *.geojson
+include *.csv
 recursive-include ./news_classifier/*
 
 include news_classifier/models/models/*.pkl

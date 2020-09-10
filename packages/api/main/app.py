@@ -2,7 +2,7 @@ from os import environ
 
 from flask import Flask
 from flask_cors import CORS
-from property_anomaly_detector.api.controllers import anomalies, properties
+from main.controllers import anomalies, properties
 
 app = Flask(__name__)
 

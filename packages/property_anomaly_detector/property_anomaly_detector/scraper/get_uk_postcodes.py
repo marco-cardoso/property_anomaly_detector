@@ -46,7 +46,7 @@ def download_postcode_areas() -> pd.DataFrame:
     postcode_table = postcodes_tables[0]
 
     print("Saving the postcodes....")
-    output_path = path.join("..", "datasets", "uk_postcodes", f"postcodes.csv")
+    output_path = path.join("../..", "datasets", "uk_postcodes", f"postcodes.csv")
     postcode_table.to_csv(output_path)
     print("Saving the postcodes....DONE")
     return postcode_table
@@ -71,7 +71,7 @@ def download_postcode_districts(postcode_area: str):
     postcode_districts = pd.read_html(uk_postcode_districts)[1]
 
     print(f"Saving {postcode_area} district codes...")
-    output_path = path.join("..", "datasets", "uk_postcodes", f"{postcode_area}.csv")
+    output_path = path.join("../..", "datasets", "uk_postcodes", f"{postcode_area}.csv")
     postcode_districts.to_csv(output_path)
     print(f"Saving {postcode_area} district codes...DONE")
 

@@ -1,0 +1,46 @@
+version: '3'
+services:
+  mongo:
+    image: 'mongo'
+    container_name: 'mongo_container'
+    env_file:
+      - variables.env
+    ports:
+      - "27016:27017"
+    volumes:
+      - mongo-volume:/data/db
+    networks:
+      - mongodb_nw
+  flask:
+    build:
+      context: .
+      dockerfile: './docker/Dockerfile.flask'
+    container_name: 'flask_container'
+    env_file:
+      - variables.env
+    volumes:
+      - ./packages:/opt/services/property_anomaly_detector
+    networks:
+      - web_nw
+      - mongodb_nw
+    depends_on:
+      - mongo
+  nginx:
+    image: "nginx:1.13.5"
+    container_name: 'nginx__container'
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+    networks:
+      - web_nw
+    depends_on:
+      - flask
+networks:
+  web_nw:
+    driver: bridge
+  mongodb_nw:
+    driver: bridge
+volumes:
+  packages:
+  mongo-volume:

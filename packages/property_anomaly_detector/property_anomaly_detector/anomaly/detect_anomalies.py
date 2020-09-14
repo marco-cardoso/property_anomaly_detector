@@ -152,4 +152,4 @@ def classify_property(property: dict):
 
 
 if __name__ == "__main__":
-    print(detect_db(save_results=True))
+    detect_db(save_results=True)

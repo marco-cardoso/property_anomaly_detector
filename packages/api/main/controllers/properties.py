@@ -2,6 +2,7 @@ import ast
 
 from flask import Blueprint
 from flask import request
+from flask_cors import CORS, cross_origin
 
 from property_anomaly_detector.database import database as db
 
@@ -55,6 +56,7 @@ def generate_filter_dict(args):
 
 
 @app.route('/get-categorical-filters', methods=['GET'])
+@cross_origin()
 def get_categorical_filters():
     if request.method == 'GET':
         result = {'property_type': list(db.get_unique_elements("property_type"))}
@@ -62,8 +64,6 @@ def get_categorical_filters():
         result['property_type'][empty_string_idx] = "not_specified"
 
         result['furnished_state'] = list(db.get_unique_elements("furnished_state"))
-        empty_string_idx = result['furnished_state'].index(None)
-        result['furnished_state'][empty_string_idx] = "not_specified"
 
         result['shared_occupancy'] = list(db.get_unique_elements("rental_prices.shared_occupancy"))
         return result

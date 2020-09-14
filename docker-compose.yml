@@ -28,7 +28,7 @@ services:
   cron:
     build:
       context: .
-      dockerfile: 'Dockerfile.cron'
+      dockerfile: './docker/Dockerfile.cron'
     container_name: cron_container
     networks:
       - mongodb_nw

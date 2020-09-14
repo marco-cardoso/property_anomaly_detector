@@ -25,6 +25,17 @@ services:
       - mongodb_nw
     depends_on:
       - mongo
+  cron:
+    build:
+      context: .
+      dockerfile: 'Dockerfile.cron'
+    container_name: cron_container
+    networks:
+      - mongodb_nw
+    depends_on:
+        - mongo
+    env_file:
+      - variables.env
   nginx:
     image: "nginx:1.13.5"
     container_name: 'nginx__container'

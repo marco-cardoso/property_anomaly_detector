@@ -1,0 +1,38 @@
+FROM python:3.7
+RUN apt-get update && \
+    apt-get install -y cron
+
+RUN apt-get install dos2unix
+
+# Cron related instructions
+
+COPY cron /opt
+
+COPY do.sh /opt
+
+# If the docker container is created from
+# a windows machine then is necessary to
+# convert the shell script to unix format.
+# Otherwise it does not work correctly
+RUN dos2unix /opt/do.sh
+
+RUN chmod +x /opt/do.sh
+
+RUN chmod 0600 /opt/cron
+
+RUN crontab -u root /opt/cron
+
+
+# News classifier dependencies
+
+RUN mkdir -p /property_anomaly_detector
+
+COPY ./packages/property_anomaly_detector /property_anomaly_detector
+
+RUN chmod +x /property_anomaly_detector
+
+WORKDIR /property_anomaly_detector
+
+RUN /usr/local/bin/python3.7 setup.py install
+
+CMD cron -f

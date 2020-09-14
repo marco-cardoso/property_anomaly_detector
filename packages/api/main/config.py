@@ -9,13 +9,13 @@ class Config:
     TESTING = False
     CSRF_ENABLED = True
     SECRET_KEY = '}@$12310adm/=(+@d%#1`9~8/5'
-    SERVER_PORT = 5000
+    SERVER_PORT = 5001
 
 
 class ProductionConfig(Config):
     DEBUG = False
     SERVER_ADDRESS = os.environ.get('SERVER_ADDRESS', '0.0.0.0')
-    SERVER_PORT = os.environ.get('SERVER_PORT', '5000')
+    SERVER_PORT = os.environ.get('SERVER_PORT', '5001')
 
 
 class DevelopmentConfig(Config):

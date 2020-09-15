@@ -9,13 +9,12 @@ app = Blueprint('anomalies', __name__)
 
 
 @app.route('/anomalies', methods=['GET'])
-@cross_origin()
 def get_anomalies():
     if request.method == 'GET':
         anomalies = database.get_top_outliers()
         specs = database.get_specs()
         last_update_date = specs['last_update_date']
-        
+
         return jsonify({
             'anomalies' : anomalies,
             'last_update_date' : last_update_date
@@ -23,7 +22,6 @@ def get_anomalies():
 
 
 @app.route('/classify-property', methods=['GET'])
-@cross_origin()
 def classify_anomaly():
     if request.method == 'GET':
         property = {

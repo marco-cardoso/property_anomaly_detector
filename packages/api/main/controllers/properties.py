@@ -56,7 +56,6 @@ def generate_filter_dict(args):
 
 
 @app.route('/get-categorical-filters', methods=['GET'])
-@cross_origin()
 def get_categorical_filters():
     if request.method == 'GET':
         result = {'property_type': list(db.get_unique_elements("property_type"))}

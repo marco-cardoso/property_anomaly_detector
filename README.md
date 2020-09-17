@@ -22,7 +22,7 @@ results. Each advertisement has a page that can put you in touch with the proper
 
 
 This project aims to create an unsupervised solution for the problem using machine learning to help the website managers
-to identify scams as fast as possible.
+to identify scams.
 
 
 <h2> System </h2>

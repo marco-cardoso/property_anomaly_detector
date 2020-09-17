@@ -31,7 +31,7 @@ It was created a system to download the London properties from Zoopla daily and 
 an anomaly score is attached. Zoopla was chosen because it has an API with endpoints to download rental properties. As the name
 suggests just because it has a high anomaly score it does not mean that it is a scam. It could be a real agent offering a great deal or
 an advertisement with misfilled fields. Consequently, an anomaly. That is the reason that the name of the project is not "scam detector". 
-However, if someone creates a scam with a very attractive price, certainly will be detected.
+However, if someone creates a scam with a very attractive price, certainly will receive a high anomaly score.
 
 ![PAD DASH](https://github.com/marco-cardoso/property_anomaly_detector/blob/master/pad_dash.png)
 
@@ -124,7 +124,7 @@ The first step to come up with a solution for the problem was to perform an EDA 
 https://github.com/marco-cardoso/property_anomaly_detector/blob/master/notebooks/eda.ipynb
 
 Since the main focus of the project is to detect anomalies related to the monthly rental price there's no point in trying to detect
-outliers using the other features. We need to give more importance to properties with lower prices. So it means that is necessary
+outliers related to the other features. We need to give more importance to properties with lower prices. So it means that is necessary
 to find outliers in the lower bound.
 
 

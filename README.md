@@ -5,7 +5,7 @@
 
 Yearly, many people, when renting a property, are victims of scams in many websites worldwide. 
 Fraudsters pose as landlords and convince would-be tenants to send funds via money transfer. Typically
-they create advertisements of great properties for an incredible low price compared to properties of 
+they create advertisements of great properties for an incredibly low price compared to properties of 
 the same category. Under the pressure of making a "great deal"  most part of the victims do everything
 the fraudsters tell them to do because of the fear of other people renting the property.
 
@@ -14,7 +14,7 @@ There's a great video from BBC explaining better how the scams work (Click in th
 [![BBC Video](https://img.youtube.com/vi/mOGAxUqHxsE/0.jpg)](https://www.youtube.com/watch?v=mOGAxUqHxsE)
 
 
-Property rental websites are very similiar : They possess a webpage listing the advertisements with options to filter the
+Property rental websites are very similar : They possess a webpage listing the advertisements with options to filter the
 results. Each advertisement has a page that can put you in touch with the property agent/fraudster. 
 
 
@@ -27,10 +27,10 @@ to identify scams.
 
 <h2> System </h2>
 
-It was created a system to download the London properties from Zoopla daily and apply the anomaly detector over them. For each property
+It was created a system to download the London properties from Zoopla daily and apply the anomaly detector over them. For each property,
 an anomaly score is attached. Zoopla was chosen because it has an API with endpoints to download rental properties. As the name
 suggests just because it has a high anomaly score it does not mean that it is a scam. It could be a real agent offering a great deal or
-an advertisement with misfilled fields. Consequently, an anomaly. That is the reason that the name of the project is not "scam detector". 
+an advertisement with misfiled fields. Consequently, an anomaly. That is the reason that the name of the project is not "scam detector". 
 However, if someone creates a scam with a very attractive price, certainly will receive a high anomaly score.
 
 ![PAD DASH](https://github.com/marco-cardoso/property_anomaly_detector/blob/master/pad_dash.png)
@@ -42,12 +42,12 @@ You can also insert the data of a property individually to check its anomaly sco
 
 ![ss individual](https://github.com/marco-cardoso/property_anomaly_detector/blob/master/classify_individual_property.png)
 
-This dialog will show the given property anomaly score and the daily highest anomaly score for comparison purporse.
+This dialog will show the given property anomaly score and the daily highest anomaly score for comparison purposes.
 
 You can visit the system at : http://3.13.238.29:8080
 
 
-<h2> Architeture </h2>
+<h2> Architecture </h2>
 
 ![arch](https://github.com/marco-cardoso/property_anomaly_detector/blob/master/pad_arch.jpg)
 
@@ -110,7 +110,7 @@ After the requirements are satisfied open a terminal in the project root folder 
 
 Ideally, the best architeture would be a separated instance for MONGO and CRON containers. With more
 attention to the last one, given the fact that is responsible to load thousands of MongoDB documents and detect the latest
-anomalies, using a lot of RAM memory and CPU power. Nonetheless, this architeture was chosen for simplicity and to
+anomalies, using a lot of RAM memory and CPU power. Nonetheless, this architecture was chosen for simplicity and to
 reduce the costs on AWS, since only one instance is enough due to the low amount of user requests.
 
 
@@ -124,14 +124,13 @@ The first step to come up with a solution for the problem was to perform an EDA 
 https://github.com/marco-cardoso/property_anomaly_detector/blob/master/notebooks/eda.ipynb
 
 Since the main focus of the project is to detect anomalies related to the monthly rental price there's no point in trying to detect
-outliers related to the other features. We need to give more importance to properties with lower prices. So it means that is necessary
-to find outliers in the lower bound.
+outliers related to the other features. We need to give more importance to properties at lower prices.
 
 
-To detect the properties with highest chance to be an anomaly the first step is to load all properties from the MongoDB. Then, they are
-grouped by Type (Flat, studio etc...) and Shared occupancy state (If is a shared property or not). The nearest neighbors 
-algorithm ball_tree is applied to each group using the variables latitude, longitude, amount of bedrooms and amount of recepts. The
-algorithm, for each property, detect its 20 nearest neighbors. Finally, it calculates the median monthly rental price of the neighbors 
+To detect the properties with the highest chance to be an anomaly the first step is to load all properties from the MongoDB. Then, they are
+grouped by Type (Flat, studio, etc...) and Shared occupancy state (If is a shared property or not). The nearest neighbors 
+algorithm ball_tree is applied to each group using the variables latitude, longitude, amount of bedrooms, and amount of receipts. The
+algorithm, for each property, detects its 20 nearest neighbors. Finally, it calculates the median monthly rental price of the neighbors 
 and subtracts with the price of the property being analysed. This process is done for all the properties in MongoDB. If the difference
 between a property and its neighbors is positive it means the property is more expensive, otherwise it is cheaper. In order for the score
 to be more intuitive it is multiplied by -1. So the higher the score the higher is the probability of being an anomaly.
@@ -141,29 +140,29 @@ to be more intuitive it is multiplied by -1. So the higher the score the higher 
 <b>Why to not use property_type and shared_occupancy variables with the nearest neighbors algorithm, instead of grouping them ?</b>
 
 Property type has many unique values. If OneHotEncoder was applied it would produce a huge amount of features. Consequently, it would increase
-the processing time dramatically. And the most important factor : If a property has the type X, which only has more two
+the processing time dramatically. And the most important factor : If a property has type X, which only has more two
 properties in the entire database the nearest neighbor algorithm would use properties of other types to perform the distance calculation.
-Using the other variables to get the nearest points, such as the amount of bedrooms for example. This is not feasible, since just because
-two properties have the same number of bedrooms and different types it does not mean they have similiar prices. The price distributions 
+Using the other variables to get the nearest points, such as the number of bedrooms for example. This is not feasible, since just because
+two properties have the same number of bedrooms and different types it does not mean they have similar prices. The price distributions 
 vary very much for each property type. The same explanation applies to shared_occupancy.
 
 <b>Why to not use the PyOD default KNearestNeighbors outlier implementation ?</b>
 
 The PyOD KnearestNeighbors implementation detects multivariate outliers and does not have a parameter to calculate the outlier scores for 
-a specific feature. It looks all the features for outliers. Meaning that if a property has a strange amount of bedrooms or recepts it would receive
-a high anomaly score. This problem only cares about the monthly rental price outliers, but taking in consideration the similiarity of the other
+a specific feature. It looks at all the features for outliers. Meaning that if a property has a strange amount of bedrooms or recepts it would receive
+a high anomaly score. This problem only cares about the monthly rental price outliers, but taking into consideration the similarity of the other
 features.
 
 
-<b>Instead of using the nearest neighbors algorithm, why to not simply create a loop over the postal codes and apply the same proccess ?</b>
+<b>Instead of using the nearest neighbors algorithm, why do not simply create a loop over the postal codes and apply the same process ?</b>
 
-Many postal codes has few or many properties to perform the calculation, resulting in sometimes a result not very accurate.
+Many postal codes have few or many properties to perform the calculation, resulting in sometimes a result not very accurate.
 
 <b>Why to not simply use the Z-Score test ?</b>
 
 ![z_score](https://i0.wp.com/statisticsbyjim.com/wp-content/uploads/2019/10/z-score_equ.png?resize=86%2C38&ssl=1)
 
 Some groups of property types and shared occupancy have a lot of properties. Different boroughs have different distributions, if a property is near a touristic attraction
-the price is higher. It's necessary to apply the nearest neighbor algorithm to take this into consideration. The final calculation (outlier score) is slightly similiar to
-the Z score. It just does not divide the subtraction by the standard deviation and uses the median instead of the mean. This way makes more intuitive to understand the value itself, which is simply the inverse of the difference between the property rental price and the median of its neighbors.
+the price is higher. It's necessary to apply the nearest neighbor algorithm to take this into consideration. The final calculation (outlier score) is slightly similar to
+the Z score. It just does not divide the subtraction by the standard deviation and uses the median instead of the mean. This way makes it more intuitive to understand the value itself, which is simply the inverse of the difference between the property rental price and the median of its neighbors.
 

@@ -87,7 +87,7 @@ perform operations related to the anomalies. The CRON container uses just the la
 
 Requirements
 <ul>
-    <li>At least dockver v19.03.12 </li>
+    <li>At least docker v19.03.12 </li>
     <li>At least docker-compose v1.26.2</li>
     <li>An AWS account with an IAM user that has full access to S3.</li>
 </ul>
@@ -158,13 +158,6 @@ features.
 
 Many postal codes have few or many properties to perform the calculation, resulting in sometimes a result not very accurate.
 
-<b>Why to not simply use the Z-Score test ?</b>
-
-![z_score](https://i0.wp.com/statisticsbyjim.com/wp-content/uploads/2019/10/z-score_equ.png?resize=86%2C38&ssl=1)
-
-Some groups of property types and shared occupancy have a lot of properties. Different boroughs have different distributions, if a property is near a touristic attraction
-the price is higher. It's necessary to apply the nearest neighbor algorithm to take this into consideration. The final calculation (outlier score) is slightly similar to
-the Z score. It just does not divide the subtraction by the standard deviation and uses the median instead of the mean. This way makes it more intuitive to understand the value itself, which is simply the inverse of the difference between the property rental price and the median of its neighbors.
 
 <h2> Future work </h2>
 

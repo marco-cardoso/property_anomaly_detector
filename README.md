@@ -35,8 +35,8 @@ However, if someone creates a scam with a very attractive price, certainly will 
 
 ![PAD DASH](https://github.com/marco-cardoso/property_anomaly_detector/blob/master/pad_dash.png)
 
-Every day a routine detects the TOP 100 London properties with the highest scores and displays in the table. You can click in each anomaly
-to see the bar plot comparison and the property location. This tool could be used by the website managers to help them to spot scams. 
+Every day a routine detects the TOP 100 London properties with the highest scores and displays in the table sorted by the score. 
+You can click in each anomaly to see the bar plot comparison and the property location. 
 
 You can also insert the data of a property individually to check its anomaly score. Just click on the "Classify" button.
 
@@ -89,7 +89,6 @@ Requirements
 <ul>
     <li>At least docker v19.03.12 </li>
     <li>At least docker-compose v1.26.2</li>
-    <li>An AWS account with an IAM user that has full access to S3.</li>
 </ul>
 
 Change the below environment variables values, located at :

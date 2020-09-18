@@ -166,3 +166,16 @@ Some groups of property types and shared occupancy have a lot of properties. Dif
 the price is higher. It's necessary to apply the nearest neighbor algorithm to take this into consideration. The final calculation (outlier score) is slightly similar to
 the Z score. It just does not divide the subtraction by the standard deviation and uses the median instead of the mean. This way makes it more intuitive to understand the value itself, which is simply the inverse of the difference between the property rental price and the median of its neighbors.
 
+<h2> Future work </h2>
+
+<ul>
+    <li> 
+        Adapt the method to work with other websites.  It was already created a scraper to download the properties from rightmove </br>
+        https://github.com/marco-cardoso/RIght-move-scraper
+    </li>
+    <li>
+        Currently, most part of the properties with high scores is the result of misfiled pieces of information, such as if the property is shared or not.
+        A possible alternative for the problem would be applying a Natural language processing solution over the property description to check if
+        the agent/landlord described it as shared occupancy.
+    </li>
+</ul>

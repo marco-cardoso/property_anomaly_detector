@@ -10,4 +10,4 @@ for variable_value in $(cat /proc/1/environ | sed 's/\x00/\n/g'); do
 /usr/local/bin/python3.7 /property_anomaly_detector/property_anomaly_detector/scraper/zoopla/zoopla.py
 
 # Detect the anomalies over the latest properties
-/usr/local/bin/python3.7 /property_anomaly_detector/property_anomaly_detector/scraper/anomaly/detect_anomalies.py
+/usr/local/bin/python3.7 /property_anomaly_detector/property_anomaly_detector/anomaly/detect_anomalies.py

@@ -11,7 +11,7 @@ the fraudsters tell them to do because of the fear of other people renting the p
 
 There's a great video from BBC explaining better how the scams work (Click in the image below to watch on youtube) :
 
-[![BBC Video](https://img.youtube.com/vi/mOGAxUqHxsE/0.jpg)](https://www.youtube.com/watch?v=mOGAxUqHxsE)
+[![BBC Video](https://img.youtube.com/vi/mOGAxUqHxsE/2.jpg)](https://www.youtube.com/watch?v=mOGAxUqHxsE)
 
 
 Property rental websites are very similar : They possess a webpage listing the advertisements with options to filter the

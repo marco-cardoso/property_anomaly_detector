@@ -38,7 +38,7 @@ However, if someone creates a scam with a very attractive price, certainly will 
 Every day a routine detects the TOP 100 London properties with the highest scores and displays in the table sorted by the score. 
 You can click in each anomaly to see the bar plot comparison and the property location. 
 
-You can also insert the data of a property individually to check its anomaly score. Just click on the "Classify" button.
+You can also insert the data of a property individually to check its anomaly score. Just fill the form and click on the "Get the anomaly score" button.
 
 ![ss individual](https://github.com/marco-cardoso/property_anomaly_detector/blob/master/classify_individual_property.png)
 
@@ -110,7 +110,7 @@ After the requirements are satisfied open a terminal in the project root folder 
 Ideally, the best architeture would be a separated instance for MONGO and CRON containers. With more
 attention to the last one, given the fact that is responsible to load thousands of MongoDB documents and detect the latest
 anomalies, using a lot of RAM memory and CPU power. Nonetheless, this architecture was chosen for simplicity and to
-reduce the costs on AWS, since only one instance is enough due to the low amount of user requests.
+reduce the costs on AWS.
 
 
 <h2> Anomaly detection method </h2>
